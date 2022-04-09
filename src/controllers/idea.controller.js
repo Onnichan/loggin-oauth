@@ -9,12 +9,12 @@ class IdeaController{
 
   async get(req, res){
     const {ideaId} = req.params;
-    const idea = await _userService.get(ideaId);
+    const idea = await _ideaService.get(ideaId);
     return res.send(idea);
   }
 
   async getAll(req, res){
-    const ideas = await _userService.getAll();
+    const ideas = await _ideaService.getAll();
     return res.send(ideas);
   }
 
@@ -27,13 +27,13 @@ class IdeaController{
   async update(req, res){
     const {body} = req;
     const {ideaId} = req.params;
-    const updateIdea = await _userService.update(ideaId, body);
+    const updateIdea = await _ideaService.update(ideaId, body);
     return res.send(updateIdea);
   }
 
   async delete(req, res){
     const {ideaId} = req.params;
-    const deleteIdea = await _userService.delete(ideaId);
+    const deleteIdea = await _ideaService.delete(ideaId);
     return res.send(deleteIdea);
   }
 

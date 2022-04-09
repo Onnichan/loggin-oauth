@@ -5,11 +5,13 @@ const {HomeController,CommentController, IdeaController, UserController} = requi
 const {Comment, User, Idea} = require('../models');
 const {CommentRepository, IdeaRepository, UserRepository} = require('../repositories');
 
-const {HomeRoutes} = require('../routes/index.routes');
+const {HomeRoutes, CommentRoutes, IdeaRoutes, UserRoutes} = require('../routes/index.routes');
 const Routes = require('../routes');
 
 const app = require('.'); // same to './index.js'
 const config = require('../config');
+// const userRoutes = require('../routes/user.routes');
+// const ideaRoutes = require('../routes/idea.routes');
 
 const container = createContainer();
 /**
@@ -37,7 +39,10 @@ container.register({
   CommentController: asClass(CommentController.bind(CommentController)).singleton(),
   UserController: asClass(UserController.bind(UserController)).singleton()
 }).register({
-  HomeRoutes: asFunction(HomeRoutes)
+  HomeRoutes: asFunction(HomeRoutes).singleton(),
+  UserRoutes: asFunction(UserRoutes).singleton(),
+  IdeaRoutes: asFunction(IdeaRoutes).singleton(),
+  CommentRoutes: asFunction(CommentRoutes).singleton()
 }).register({
   Idea: asValue(Idea), // asValue because return is an object
   User: asValue(User),
