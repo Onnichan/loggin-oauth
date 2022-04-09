@@ -1,4 +1,5 @@
 const {JwtHelper} = require('../helpers');
+const errorHelper = require('../helpers/error.helper');
 let _userService = null;
 
 class AuthService{
@@ -8,13 +9,9 @@ class AuthService{
 
   async signUp(user){
     const {username} = user;
+    console.log(user);
     const userExist = await _userService.getUserByUsername(username);
-    if(userExist){
-      const error = new Error();
-      error.status = 401;
-      error.message = 'User already exists';
-      throw error;
-    }
+    if(userExist) errorHelper('User already exists', 401);
 
     return await _userService.create(user);
   }
@@ -22,20 +19,11 @@ class AuthService{
   async signIn(user){
     const {username, password} = user;
     const userExist = await _userService.getUserByUsername(username);
-    if(!userExist){
-      const error = new Error();
-      error.status = 404;
-      error.message = 'User does not exists';
-      throw error;
-    }
+    console.log(userExist);
+    if(!userExist) errorHelper('User does not exists', 404);
 
-    const validPassword =  userExist.comparePasswords(password);
-    if(!validPassword){
-      const error = new Error();
-      error.status = 400;
-      error.message = 'Invalid Password';
-      throw error;
-    }
+    const validPassword = userExist.comparePassword(password);
+    if(!validPassword) errorHelper('Invalid Password', 400);
 
     const userToEncode = {
       username: userExist.username,
@@ -45,8 +33,6 @@ class AuthService{
     const token = JwtHelper.generateToken(userToEncode);
     return {token, user: userExist};
   }
-
-  
 }
 
 module.exports = AuthService;
