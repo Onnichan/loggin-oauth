@@ -1,8 +1,9 @@
 const {asClass, asFunction, asValue, createContainer} = require('awilix');
 
-const {HomeService} = require('../services');
-const {HomeController} = require('../controllers');
+const {HomeService,CommentService,IdeaService,UserService} = require('../services');
+const {HomeController,CommentController, IdeaController, UserController} = require('../controllers');
 const {Comment, User, Idea} = require('../models');
+const {CommentRepository, IdeaRepository, UserRepository} = require('../repositories');
 
 const {HomeRoutes} = require('../routes/index.routes');
 const Routes = require('../routes');
@@ -26,15 +27,25 @@ container.register({
   config: asValue(config),
   router: asFunction(Routes)
 }).register({
-  HomeService: asClass(HomeService).singleton()
+  HomeService: asClass(HomeService).singleton(),
+  IdeaService: asClass(IdeaService).singleton(),
+  CommentService: asClass(CommentService).singleton(),
+  UserService: asClass(UserService).singleton()
 }).register({
-  HomeController: asClass(HomeController.bind(HomeController)).singleton()
+  HomeController: asClass(HomeController.bind(HomeController)).singleton(),
+  IdeaController: asClass(IdeaController.bind(IdeaController)).singleton(),
+  CommentController: asClass(CommentController.bind(CommentController)).singleton(),
+  UserController: asClass(UserController.bind(UserController)).singleton()
 }).register({
   HomeRoutes: asFunction(HomeRoutes)
 }).register({
   Idea: asValue(Idea), // asValue because return is an object
   User: asValue(User),
   Comment: asValue(Comment)
+}).register({
+  UserRepository: asClass(UserRepository).singleton(),
+  IdeaRepository: asClass(IdeaRepository).singleton(),
+  CommentRepository: asClass(CommentRepository).singleton()
 })
 
 module.exports = container;
