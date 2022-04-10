@@ -9,7 +9,7 @@ class AuthService{
 
   async signUp(user){
     const {username} = user;
-    console.log(user);
+    // console.log(user);
     const userExist = await _userService.getUserByUsername(username);
     if(userExist) errorHelper('User already exists', 401);
 
@@ -19,7 +19,7 @@ class AuthService{
   async signIn(user){
     const {username, password} = user;
     const userExist = await _userService.getUserByUsername(username);
-    console.log(userExist);
+    // console.log(userExist);
     if(!userExist) errorHelper('User does not exists', 404);
 
     const validPassword = userExist.comparePassword(password);

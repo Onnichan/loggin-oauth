@@ -15,7 +15,7 @@ const UserSchema = new Schema({
 
 UserSchema.pre('save', async function(next){
   const user = this;
-  console.log('Here', user);
+  // console.log('Here', user);
   if(!user.isModified('password')){
     return next();
   }
@@ -28,14 +28,14 @@ UserSchema.pre('save', async function(next){
   const salt = genSaltSync(10) // generate salt with 10 characters
   const hashedPassword = hashSync(user.password, salt);
   user.password = hashedPassword;
-  console.log(user.password);
+  // console.log(user.password);
   next();
 })
 
 
 UserSchema.methods.toJSON = function(){
   let user = this.toObject();
-  console.log('show a new user: ', user);
+  // console.log('show a new user: ', user);
   delete user.password;
   return user;
 }
